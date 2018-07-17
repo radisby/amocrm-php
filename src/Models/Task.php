@@ -133,7 +133,7 @@ class Task extends AbstractModel
      * @return bool Флаг успешности выполнения запроса
      * @throws \AmoCRM\Exception
      */
-    public function apiUpdate($id, $text, $modified = 'now')
+    public function apiUpdate($id, array $data, $modified = 'now')
     {
         $this->checkId($id);
 
@@ -145,7 +145,11 @@ class Task extends AbstractModel
 
         $task = $this->getValues();
         $task['id'] = $id;
-        $task['text'] = $text;
+        
+        foreach ($data as $key => $value) {
+            $task[$key] = $value;
+        }
+        //$task['text'] = $text;
         $task['last_modified'] = strtotime($modified);
 
         $parameters['tasks']['update'][] = $task;
